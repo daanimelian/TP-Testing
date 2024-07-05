@@ -10,27 +10,35 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class TestUntitled():
-  def setup_method(self, method):
-    self.driver = webdriver.Chrome()
-    self.vars = {}
-  
-  def teardown_method(self, method):
-    self.driver.quit()
-  
-  def test_untitled(self):
-    self.driver.get("https://www.demoblaze.com/index.html")
-    self.driver.set_window_size(1552, 832)
-    assert self.driver.title == "STORE"
-    self.driver.find_element(By.ID, "login2").click()
-    time.sleep(10)
-    assert self.driver.find_elements(By.ID, "loginusername") is True
-    self.driver.find_element(By.ID, "loginusername").click()
-    time.sleep(10)
-    self.driver.find_element(By.ID, "loginusername").send_keys("a")
-    self.driver.find_element(By.ID, "loginpassword").click()
-    self.driver.find_element(By.ID, "loginpassword").send_keys("a")
-    self.driver.find_element(By.CSS_SELECTOR, "#logInModal .btn-primary").click()
-    time.sleep(10)
-    self.driver.find_element(By.ID, "nameofuser").click()
-  
+
+class TestsDemoBlaze():
+    def setup_method(self, method):
+        self.driver = webdriver.Chrome()
+        self.vars = {}
+
+    def teardown_method(self, method):
+        self.driver.quit()
+
+    def test_login_logout(self):
+        """ CP-1. Resultado esperado: Al logearte, que aparezca el nombre de usuario. Y que al cerrar sesión no
+        aparezca más."""
+        self.driver.get("https://www.demoblaze.com/index.html")
+        self.driver.set_window_size(784, 816)
+        time.sleep(10)
+        self.driver.find_element(By.ID, "login2").click()
+        time.sleep(10)
+        self.driver.find_element(By.ID, "loginusername").click()
+        self.driver.find_element(By.ID, "loginusername").send_keys("a")
+        self.driver.find_element(By.ID, "loginpassword").click()
+        self.driver.find_element(By.ID, "loginpassword").send_keys("a")
+        time.sleep(3)
+        self.driver.find_element(By.CSS_SELECTOR, "#logInModal .btn-primary").click()
+        time.sleep(10)
+
+        assert self.driver.find_element(By.ID, "nameofuser").is_displayed()
+        assert self.driver.find_element(By.ID, "nameofuser").accessible_name == "Welcome a"
+        assert self.driver.find_element(By.ID, "login2").is_displayed() is False
+        self.driver.find_element(By.ID, "logout2").click()
+
+        assert self.driver.find_element(By.ID, "login2").is_displayed()
+
