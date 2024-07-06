@@ -38,7 +38,45 @@ class TestsDemoBlaze():
         assert self.driver.find_element(By.ID, "nameofuser").is_displayed()
         assert self.driver.find_element(By.ID, "nameofuser").accessible_name == "Welcome a"
         assert self.driver.find_element(By.ID, "login2").is_displayed() is False
+        #
         self.driver.find_element(By.ID, "logout2").click()
-
         assert self.driver.find_element(By.ID, "login2").is_displayed()
+
+    def test_cart(self):
+        """"""
+        self.driver.get("https://www.demoblaze.com/")
+        self.driver.set_window_size(784, 816)
+        time.sleep(10)
+        self.driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click()
+        time.sleep(10)
+        self.driver.find_element(By.LINK_TEXT, "Add to cart").click()
+        time.sleep(10)
+        assert self.driver.switch_to.alert.text == "Product added"
+        self.driver.switch_to.alert.accept()
+        time.sleep(10)
+        self.driver.find_element(By.ID, "cartur").click()
+        time.sleep(10)
+        phone_name = self.driver.find_element(By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]").accessible_name
+        assert phone_name == "Samsung galaxy s6"
+        time.sleep(10)
+        self.driver.find_element(By.LINK_TEXT, "Delete").click()
+        self.driver.find_element(By.LINK_TEXT, "Cart").click()
+        time.sleep(10)
+        print(self.driver.find_element(By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]").is_displayed())
+
+        #try and catch o find elements lista q da 0
+
+    def test_descripcionelementos(self):
+        #entra a la apgina
+        self.driver.get("https://www.demoblaze.com/")
+        self.driver.set_window_size(784, 816)
+        #click en el celular samsung
+        time.sleep(10)
+        self.driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click()
+        #añadir al carrito
+        time.sleep(10)
+        #check nombre del elemento
+        assert self.driver.find_element(By.XPATH, "/html/body/div[5]/div/div[2]/h2").accessible_name == "Samsung galaxy s6"
+        assert self.driver.find_element(By.XPATH,"/html/body/div[5]/div/div[2]/h3").accessible_name == "$360 *includes tax"
+        assert self.driver.find_element(By.XPATH,"/html/body/div[5]/div/div[2]/div[1]/div/div").text == "Product description\nThe Samsung Galaxy S6 is powered by 1.5GHz octa-core Samsung Exynos 7420 processor and it comes with 3GB of RAM. The phone packs 32GB of internal storage cannot be expanded."
 
