@@ -11,7 +11,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-class TestsDemoBlaze():
+class TestsDemoBlaze:
     def setup_method(self, method):
         self.driver = webdriver.Chrome()
         self.vars = {}
@@ -20,63 +20,92 @@ class TestsDemoBlaze():
         self.driver.quit()
 
     def test_login_logout(self):
-        """ CP-1. Resultado esperado: Al logearte, que aparezca el nombre de usuario. Y que al cerrar sesión no
+        """CP-1. Resultado esperado: Al logearte, que aparezca el nombre de usuario. Y que al cerrar sesión no
         aparezca más."""
+        # Ingresar a la pagina
         self.driver.get("https://www.demoblaze.com/index.html")
         self.driver.set_window_size(784, 816)
         time.sleep(10)
+        # Ingresar al login
         self.driver.find_element(By.ID, "login2").click()
         time.sleep(10)
+        # Ingresar las credenciales
         self.driver.find_element(By.ID, "loginusername").click()
         self.driver.find_element(By.ID, "loginusername").send_keys("a")
         self.driver.find_element(By.ID, "loginpassword").click()
         self.driver.find_element(By.ID, "loginpassword").send_keys("a")
         time.sleep(3)
+        # Hacer click en el boton de login
         self.driver.find_element(By.CSS_SELECTOR, "#logInModal .btn-primary").click()
         time.sleep(10)
 
         assert self.driver.find_element(By.ID, "nameofuser").is_displayed()
-        assert self.driver.find_element(By.ID, "nameofuser").accessible_name == "Welcome a"
+        assert (
+            self.driver.find_element(By.ID, "nameofuser").accessible_name == "Welcome a"
+        )
         assert self.driver.find_element(By.ID, "login2").is_displayed() is False
-        #
+        # Hacer click en el boton de logout
         self.driver.find_element(By.ID, "logout2").click()
         assert self.driver.find_element(By.ID, "login2").is_displayed()
 
     def test_cart(self):
-        """"""
+        """CP-2. Resultado esperado: Verificar que se agreguen y se eliminen productos del carrito."""
         self.driver.get("https://www.demoblaze.com/")
         self.driver.set_window_size(784, 816)
-        time.sleep(10)
+        time.sleep(5)
         self.driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click()
-        time.sleep(10)
+        time.sleep(5)
         self.driver.find_element(By.LINK_TEXT, "Add to cart").click()
-        time.sleep(10)
+        time.sleep(5)
         assert self.driver.switch_to.alert.text == "Product added"
         self.driver.switch_to.alert.accept()
-        time.sleep(10)
+        time.sleep(5)
         self.driver.find_element(By.ID, "cartur").click()
-        time.sleep(10)
-        phone_name = self.driver.find_element(By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]").accessible_name
+        time.sleep(5)
+        phone_name = self.driver.find_element(
+            By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]"
+        ).accessible_name
         assert phone_name == "Samsung galaxy s6"
-        time.sleep(10)
+        time.sleep(5)
         self.driver.find_element(By.LINK_TEXT, "Delete").click()
         self.driver.find_element(By.LINK_TEXT, "Cart").click()
-        time.sleep(10)
-        print(self.driver.find_element(By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]").is_displayed())
+        time.sleep(5)
 
-        #try and catch o find elements lista q da 0
+        cart_products =   self.driver.find_elements(
+                By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]"
+        # Chequear que no hay elementos en el carrito
+        assert  len(cart_products) == 0
 
-    def test_descripcionelementos(self):
-        #entra a la apgina
+
+        # try and catch o find elements lista q da 0
+
+    def test_descripcion_elementos(self):
+        """CP-3: Resultado esperado: Al seleccionar un elemento aparezca el nombre, el precio, la descripcion y el boton
+         de agregar al carrito."""
+        # entra a la apgina
         self.driver.get("https://www.demoblaze.com/")
         self.driver.set_window_size(784, 816)
-        #click en el celular samsung
+        # click en el celular samsung
         time.sleep(10)
         self.driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click()
-        #añadir al carrito
+        # añadir al carrito
         time.sleep(10)
-        #check nombre del elemento
-        assert self.driver.find_element(By.XPATH, "/html/body/div[5]/div/div[2]/h2").accessible_name == "Samsung galaxy s6"
-        assert self.driver.find_element(By.XPATH,"/html/body/div[5]/div/div[2]/h3").accessible_name == "$360 *includes tax"
-        assert self.driver.find_element(By.XPATH,"/html/body/div[5]/div/div[2]/div[1]/div/div").text == "Product description\nThe Samsung Galaxy S6 is powered by 1.5GHz octa-core Samsung Exynos 7420 processor and it comes with 3GB of RAM. The phone packs 32GB of internal storage cannot be expanded."
-
+        # check nombre del elemento
+        assert (
+            self.driver.find_element(
+                By.XPATH, "/html/body/div[5]/div/div[2]/h2"
+            ).accessible_name
+            == "Samsung galaxy s6"
+        )
+        assert (
+            self.driver.find_element(
+                By.XPATH, "/html/body/div[5]/div/div[2]/h3"
+            ).accessible_name
+            == "$360 *includes tax"
+        )
+        assert (
+            self.driver.find_element(
+                By.XPATH, "/html/body/div[5]/div/div[2]/div[1]/div/div"
+            ).text
+            == "Product description\nThe Samsung Galaxy S6 is powered by 1.5GHz octa-core Samsung Exynos 7420 processor and it comes with 3GB of RAM. The phone packs 32GB of internal storage cannot be expanded."
+        )
