@@ -72,7 +72,7 @@ class TestsDemoBlaze:
         time.sleep(5)
 
         cart_products =   self.driver.find_elements(
-                By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]"
+                By.XPATH, "/html/body/div[6]/div/div[1]/div/table/tbody/tr/td[2]")
         # Chequear que no hay elementos en el carrito
         assert  len(cart_products) == 0
 
@@ -86,10 +86,10 @@ class TestsDemoBlaze:
         self.driver.get("https://www.demoblaze.com/")
         self.driver.set_window_size(784, 816)
         # click en el celular samsung
-        time.sleep(10)
+        time.sleep(5)
         self.driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click()
         # añadir al carrito
-        time.sleep(10)
+        time.sleep(5)
         # check nombre del elemento
         assert (
             self.driver.find_element(
