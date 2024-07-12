@@ -37,7 +37,6 @@ class TestsDemoBlaze:
         self.driver.find_element(By.ID, "loginusername").send_keys("a")
         self.driver.find_element(By.ID, "loginpassword").click()
         self.driver.find_element(By.ID, "loginpassword").send_keys("a")
-        time.sleep(3)
         # Hacer click en el boton de login
         self.driver.find_element(By.CSS_SELECTOR, "#logInModal .btn-primary").click()
         time.sleep(2)
@@ -88,10 +87,10 @@ class TestsDemoBlaze:
         self.driver.get("https://www.demoblaze.com/")
         self.driver.set_window_size(784, 816)
         # click en el celular samsung
-        time.sleep(5)
+        time.sleep(2)
         self.driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click()
         # añadir al carrito
-        time.sleep(5)
+        time.sleep(2)
         # check nombre del elemento
         assert (
                 self.driver.find_element(
@@ -112,7 +111,7 @@ class TestsDemoBlaze:
                 == "Product description\nThe Samsung Galaxy S6 is powered by 1.5GHz octa-core Samsung Exynos 7420 processor and it comes with 3GB of RAM. The phone packs 32GB of internal storage cannot be expanded."
         )
 
-    def test_casodepruebaflujodecompras(self):
+    def test_flujo_de_compras(self):
         nombre_comprador = "Juanito Perez"
         pais_comprador = "Argentina"
         ciudad_comprador = "Bs As"
@@ -153,4 +152,4 @@ class TestsDemoBlaze:
         detalle_compra = self.driver.find_element(By.XPATH, "/html/body/div[10]/p").text
 
         assert msj_compra == "Thank you for your purchase!"
-        assert detalle_compra[11:-16] == f'\nAmount: {precio} USD\nCard Number: {tarjeta_cred_num}\nName: {nombre_comprador}\n'
+        assert detalle_compra[11:-16] == f'\nAmount: {precio} USD\nCard Number: {tarjeta_cred_num}\nName: {nombre_comprador}'
