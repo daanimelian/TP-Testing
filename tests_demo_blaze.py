@@ -112,6 +112,9 @@ class TestsDemoBlaze:
         )
 
     def test_flujo_de_compras(self):
+        """CP-4: Resultado esperado: Al querer hacer una compra, me deje ingresar los productos al carrito
+        para despues completar mis datos, los de mi tarjeta y poder concretar la compra"""
+
         nombre_comprador = "Juanito Perez"
         pais_comprador = "Argentina"
         ciudad_comprador = "Bs As"
